@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id='buttons'>
+    </div>
+
+    <div>
+        <form onSubmit='return false;'>
+            <label>Add another:</label>
+            <input id='search' type='text'>
+            <button id='submit' type='Submit' value='submit'>Submit</button>
+        </form>
+    </div>
+
+    <div id='gifs'>
+
+    </div>
+
+
+    <script>
+
+
+
+
+        var topics = ['cake', 'french fries', 'jellybeans'];
+        $.each(topics, function (index, value) {
+            var newbtn = '<button>' + value + '</button>';
+            $('#buttons').append(newbtn);
+        });
+
+        $('#submit').on('click', function(){
+            var newbtn = '<button>'+$('#search').val()+'</button>';
+            $('#buttons').append(newbtn);
+            console.log(newbtn);
+        });
+
+
+        $('body').on('click','#buttons button', function(){
+            $('#gifs').empty();
+
+            var search = $(this).text();
+            console.log($(this).text());
+            $.ajax({
+            url: "http://api.giphy.com/v1/gifs/search?q="+search+"&api_key=7WLyojhgIt9qwcmK1zK509qxMbEQ8I2I&limit=10",
+            method: 'GET'
+        })
+            .then(function (response) {
+                console.log(response);
+                $.each(response.data, function (index, value){
+                    var div = $('<div>Rating: '+value.rating+'<br></div>');
+                    var img = '<img src='+value.images.fixed_height.url+' data-src='+value.images.fixed_height.url+' data-still='+value.images.fixed_height_still.url+' data-paused='+false+'>';
+                    div.append(img);
+                    $('#gifs').append(div);
+                });
+            
+            });
+        }
+        );
+
+        $('body').on('click', '#gifs img', function(){
+            if(this.dataset.paused == 'false'){
+              this.src = this.dataset.still; 
+              this.dataset.paused = true; 
+            }
+            else{
+                this.src = this.dataset.src;
+                this.dataset.paused = false;
+           }
+            
+        });
+    </script>
+</body>
+
+</html>
