@@ -50,7 +50,7 @@
             var search = $(this).text();
             console.log($(this).text());
             $.ajax({
-            url: "http://api.giphy.com/v1/gifs/search?q="+search+"&api_key=7WLyojhgIt9qwcmK1zK509qxMbEQ8I2I&limit=10",
+            url: "https://api.giphy.com/v1/gifs/search?q="+search+"&api_key=7WLyojhgIt9qwcmK1zK509qxMbEQ8I2I&limit=10",
             method: 'GET'
         })
             .then(function (response) {
